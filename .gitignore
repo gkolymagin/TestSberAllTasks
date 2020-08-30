@@ -13,9 +13,5 @@ hs_err_pid*
 .gradletasknamecache
 .idea
 
-!GateWorkingDir/HttpReceivedJsons/.gitkeep
-GateWorkingDir/HttpReceivedJsons/*.txt
-GateWorkingDir/logs/*.log*
-!GateWorkingDir/CheckedMail/.gitkeep
-GateWorkingDir/CheckedMail/*
+
 
