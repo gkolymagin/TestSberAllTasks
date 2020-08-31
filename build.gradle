@@ -64,6 +64,6 @@ ext.springbootActuatorVersion = '2.1.4.RELEASE'
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-websocket:${springbootStarterVersion}"
     compile "org.springframework.boot:spring-boot-starter-actuator:${springbootActuatorVersion}"
-    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-web:${springbootStarterVersion}"
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
 }
