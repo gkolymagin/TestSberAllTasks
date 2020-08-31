@@ -1,8 +1,9 @@
 package ru.sber.task3;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 //3
 //Есть отделение почты номер 1. Оно принимает и отправляет посылки.
@@ -40,8 +41,8 @@ import java.util.logging.Logger;
 //сколько всего посылок на почте, кто кому что подбросил, кто увеличивает или уменьшает длительность своего обеда. В общем, все выводить подробно.
 //
 //PS Не смотря на большой размер задачи и обилие цифр, она намного проще, чем может показаться при первом прочтении.
+@Slf4j
 public class Post {
-    private static final Logger logger = Logger.getLogger("Post");
     private String namePost;
     private volatile Boolean winLoose = null;
     private Post anotherPost;
@@ -153,14 +154,7 @@ public class Post {
             () -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                        if (numberParcels.get() > numberIncreaseSupperReceiver) {
-                            delaySupperReceiver = delayIncreaseSupperReceiver;
-                            logger.info(namePost + " increase supper receiver to: " + delaySupperReceiver);
-                        }
-                        if (numberParcels.get() < numberDecreaseSupperReceiver) {
-                            delaySupperReceiver = delayDecreaseSupperReceiver;
-                            logger.info(namePost + " decrease supper receiver to: " + delaySupperReceiver);
-                        }
+                        checkDelaySupperReceiver();
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
@@ -168,18 +162,27 @@ public class Post {
                 }
 
             };
+
+    private void checkDelaySupperReceiver() {
+        if (numberParcels.get() > numberIncreaseSupperReceiver) {
+            if (delaySupperReceiver != delayIncreaseSupperReceiver) {
+                logger.info(namePost + " increase supper receiver to: " + delaySupperReceiver);
+            }
+            delaySupperReceiver = delayIncreaseSupperReceiver;
+        }
+        if (numberParcels.get() < numberDecreaseSupperReceiver) {
+            if (delaySupperReceiver!=delayDecreaseSupperReceiver) {
+                logger.info(namePost + " decrease supper receiver to: " + delaySupperReceiver);
+            }
+            delaySupperReceiver = delayDecreaseSupperReceiver;
+        }
+    }
+
     private Runnable runnableSenderSupperChecker =
             () -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                        if (numberParcels.get() > numberIncreaseSupperSender) {
-                            delaySupperSender = delayIncreaseSupperSender;
-                            logger.info(namePost + " increase supper sender to: " + delaySupperSender);
-                        }
-                        if (numberParcels.get() < numberDecreaseSupperSender) {
-                            delaySupperSender = delayDecreaseSupperSender;
-                            logger.info(namePost + " decrease supper sender to: " + delaySupperSender);
-                        }
+                        checkDelaySupperSender();
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
@@ -187,6 +190,22 @@ public class Post {
                 }
 
             };
+
+    private void checkDelaySupperSender() {
+        if (numberParcels.get() > numberIncreaseSupperSender) {
+            if (delaySupperSender != delayIncreaseSupperSender) {
+                logger.info(namePost + " increase supper sender to: " + delayIncreaseSupperSender);
+            }
+            delaySupperSender = delayIncreaseSupperSender;
+        }
+        if (numberParcels.get() < numberDecreaseSupperSender) {
+            if (delaySupperSender != delayDecreaseSupperSender) {
+                logger.info(namePost + " increase supper sender to: " + delayDecreaseSupperSender);
+            }
+            delaySupperSender = delayDecreaseSupperSender;
+        }
+    }
+
     private Runnable runnableSender =
             () -> {
                 while (!Thread.currentThread().isInterrupted()) {
@@ -247,7 +266,7 @@ public class Post {
     //Если спустя 2 минуты состязание почтальонов не окончилось, то приз получает тот, кто отправил больше всего посылок.
     private Runnable runnableChecker =
             () -> {
-                logger.info(namePost+ " competition counter run");
+                logger.info(namePost + " competition counter run");
                 try {
                     Thread.sleep(timeForFinish);
                 } catch (InterruptedException e) {

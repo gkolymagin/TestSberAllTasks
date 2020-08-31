@@ -1,5 +1,15 @@
 package ru.sber.task2;
-
+//2
+//Есть файл, в котором построчно располагаются простые примеры типа Число1ЗнакЧисло2. Числа типа long, знаки: +,-,*,/
+//Например:
+//30*20
+//188-53
+//160/2
+//Нужно вычислить эти значения и записать в другой файл:
+//600
+//135
+//80
+//Предусмотреть, что в выражении могут быть умышленные ошибки и его вычислить нельзя (10/0, 10/а, 10//10 и пр). В этом случае вывести, что за ошибка в примере.
 public class Parser {
 
     private static class Result {
@@ -22,14 +32,14 @@ public class Parser {
     private Result calc(String s) throws Exception {
         Result current = num(s);
         double acc;
-        while (current.rest.length() > 0) {
-            if (!(current.rest.charAt(0) == '+' ||
-                    current.rest.charAt(0) == '-' ||
-                    current.rest.charAt(0) == '*' ||
-                    current.rest.charAt(0) == '/')) {
-                break;
-            }
+        if (current.rest.length() > 0) {
             char sign = current.rest.charAt(0);
+            if (!(sign == '+' ||
+                    sign == '-' ||
+                    sign == '*' ||
+                    sign == '/')) {
+                throw new Exception("Don't right sign after number");
+            }
             String next = current.rest.substring(1);
             acc = current.acc;
             current = num(next);
@@ -47,7 +57,6 @@ public class Parser {
             } else {
                 throw new Exception("Don't allowed operation");
             }
-
             current.acc = acc;
         }
         return new Result(current.acc, current.rest);

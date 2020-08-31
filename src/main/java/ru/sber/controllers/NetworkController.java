@@ -1,12 +1,9 @@
 package ru.sber.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import ru.sber.json.requests.HeadRequest;
 import ru.sber.json.response.HeadResponse;
 import ru.sber.json.response.ResponseJson;
@@ -28,6 +25,21 @@ public class NetworkController {
         logger.info("/test");
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+
+//    4. Реализовав все 3 задачи (или те, что удалось) сделать сервис, который бы запускал работу для каждой задачи.
+//Реализовать клиент серверное приложение на спринге (можно спрингбут) с контроллерами, которые вызывают
+// сервисы работы решенных задач.
+//Контролеры должны принимать POST запросы с параметрами в урле и при необходимости телом запроса в виде json
+//Урлы должны быть вида /task/{taskID }
+//Где taskID – от 1 до 3, а необходимые параметры указывать в теле запроса.
+//Для тестирования можно пользоваться рест клиентом POSTMAN, соответствующей фичей в IntellijIdea
+// либо другим удобным инструментом
+//Задача 1 должна возвращать ответ,
+//Задача 2 должна возвращать путь до файла, в дополнении можно вывести данные из файла в json, если их не много (не обязательно)
+//Задача 3 должна вернуть ОК и запускать процесс. Для доп. Задания можно реализовать рест контролер для запросов статуса задачи,
+// с выводом кто в каком статусе на данный момент времени.
+
 
     @PostMapping(value = "/task/{taskID}")
     public ResponseEntity<Object> sendMailHeader(@PathVariable("taskID") int taskID, @RequestBody(required = false) HeadRequest headJson) throws Exception {
