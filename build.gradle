@@ -30,7 +30,7 @@ repositories {
 bootJar {
     mainClassName = "ru.sber.Start"
     baseName = "TestSberTask4"
-    destinationDir project.file('build/jar/Sber')
+    destinationDir project.file('build/Sber')
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
 
@@ -54,7 +54,7 @@ bootJar {
 task CopyResource {
     copy {
         from 'SberWorkingDir'
-        into 'build/jar/Sber'
+        into 'build/Sber'
     }
 }
 ext.springbootStarterVersion = '2.1.1.RELEASE'
